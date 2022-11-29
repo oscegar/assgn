@@ -58,5 +58,25 @@ def merge_sort(arr,cmp):
     pass
 
 # must be in-place sort
+def part(arr,s,e):
+    pvt = s
+    for i in range(s+1,e+1):
+        if arr[i] <= arr[s]:
+            pvt+=1
+            arr[i],arr[pvt] = arr[pvt], arr[i]
+    return pvt
+
+
+def qs(arr, s, e = None):
+    if e == None:
+        e = len(arr) - 1
+    if s >= e:
+        return
+    pvt = part(arr,s,e)
+
+    qs(arr,s,pvt-1)
+    qs(arr,pvt+1, e)
+
 def quick_sort(arr,cmp):
+    qs(arr)
     pass
