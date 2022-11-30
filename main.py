@@ -16,67 +16,67 @@ def multi_sort(arr, cmp, method="None"):
 
 
 
-def gaps(gap):
-    if gap <=1:
+def gaps(gap,cmp):
+    if cmp(gap,1) <= 0:
         return 0
-
     return int(math.ceil(gap/2))
+
 def swap(arr, i,j):
     temp = arr[i]
     arr[i] = arr[j]
     arr[j]= temp
 
-def inPlaceMerge(nums,start, end):
+def inPlaceMerge(nums,start, end,cmp):
 
     gap = end - start + 1
     gap = gaps(gap)
 
-    while gap > 0:
+    while cmp(gap,0) > 0:
         i = start
-        while (i + gap) <= end:
+        while cmp(i+gap, end) <=0:
             j = i + gap
 
-            if nums[i] > nums[j]:
+            if cmp(nums[i],nums[j]) > 0:
                 swap(nums, i, j)
 
             i += 1
 
         gap = gaps(gap)
 
-def ms(arr, start, end):
-    if start == end:
+def ms(arr, start, end,cmp):
+    if cmp(start,end) == 0:
         return
     mid = (start + end) // 2
-    ms(arr,start, mid )
-    ms(arr, mid+1, end)
+    ms(arr,start, mid,cmp )
+    ms(arr, mid+1, end,cmp)
 
-    inPlaceMerge(arr,start,end)
+    inPlaceMerge(arr,start,end,cmp)
 
 #in place ms
 def merge_sort(arr,cmp):
-    ms(arr, 0, len(arr) - 1)
+    ms(arr, 0, len(arr) - 1,cmp)
     pass
 
 # must be in-place sort
-def part(arr,s,e):
+def part(arr,s,e,cmp):
     pvt = s
     for i in range(s+1,e+1):
-        if arr[i] <= arr[s]:
+        if cmp(arr[i],arr[s]) <= 0 :
             pvt+=1
             arr[i],arr[pvt] = arr[pvt], arr[i]
     return pvt
 
 
-def qs(arr, s, e = None):
-    if e == None:
+def qs(arr, s, e = None,cmp):
+    if cmp(e,None) == 0:
         e = len(arr) - 1
-    if s >= e:
+    if cmp(s,e) <= 0:
         return
-    pvt = part(arr,s,e)
+    pvt = part(arr,s,e,cmp)
 
-    qs(arr,s,pvt-1)
-    qs(arr,pvt+1, e)
+    qs(arr,s,pvt-1,cmp)
+    qs(arr,pvt+1, e,cmp)
 
 def quick_sort(arr,cmp):
-    qs(arr)
+    qs(arr,0,None,cmp)
     pass
